@@ -283,6 +283,24 @@ set_launchctl_env() {
   launchctl setenv CLAUDE_CODE_ATTRIBUTION_HEADER "$ATTRIBUTION_HEADER" || true
 }
 
+print_completion_message() {
+  info "Done. Claude Code settings and shell profile files have been updated."
+
+  case "${SHELL:-}" in
+    */zsh)
+      info "To use the new environment variables in this current terminal, run: source ~/.zshrc"
+      ;;
+    */bash)
+      info "To use the new environment variables in this current terminal, run: source ~/.bashrc"
+      ;;
+    *)
+      info "To use the new environment variables in this current terminal, source your shell profile file manually."
+      ;;
+  esac
+
+  info "New terminal windows will pick up the configuration automatically."
+}
+
 main() {
   local token
 
@@ -299,7 +317,7 @@ main() {
   export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC="$DISABLE_NONESSENTIAL_TRAFFIC"
   export CLAUDE_CODE_ATTRIBUTION_HEADER="$ATTRIBUTION_HEADER"
 
-  info "Done. Open a new terminal, or run source ~/.zshrc or source ~/.bashrc in the current terminal."
+  print_completion_message
 }
 
 main "$@"
