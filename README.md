@@ -21,11 +21,24 @@ The Claude Code installer updates:
 
 It writes a managed environment block to shell profile files and replaces the `env` object in Claude Code settings while preserving other top-level settings.
 
+## Codex CLI
+
+Run on macOS:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/oneinstepGO/oneinstep-ai-cli-setup/main/codex/install.sh)" -- 'sk-your-token'
+```
+
+The Codex installer updates:
+
+- `~/.codex/config.toml`
+- `~/.codex/auth.json`
+
+It configures Codex CLI to use the OneInStep OpenAI-compatible endpoint and writes the token to `OPENAI_API_KEY` in `auth.json`.
+
 ## Layout
 
 ```text
 claude-code/install.sh
 codex/install.sh
 ```
-
-`codex/install.sh` is reserved for the Codex CLI setup script.
