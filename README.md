@@ -11,6 +11,7 @@ Run on macOS:
 ```
 
 The token is passed as the first script argument. Do not commit real tokens to this repository.
+Pass the token exactly as provided, including its existing `sk-` prefix. Do not add another `sk-`.
 
 The Claude Code installer updates:
 
@@ -35,6 +36,7 @@ The Codex installer updates:
 - `~/.codex/auth.json`
 
 It configures Codex CLI to use the OneInStep OpenAI-compatible endpoint and writes the token to `OPENAI_API_KEY` in `auth.json`.
+Pass the token exactly as provided, including its existing `sk-` prefix. Do not add another `sk-`.
 
 ## Layout
 

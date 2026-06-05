@@ -6,6 +6,7 @@ DISABLE_NONESSENTIAL_TRAFFIC="1"
 ATTRIBUTION_HEADER="0"
 BEGIN_MARKER="# >>> claude-code-oneinstep-env >>>"
 END_MARKER="# <<< claude-code-oneinstep-env <<<"
+PARSED_TOKEN=""
 
 usage() {
   cat <<'EOF'
@@ -15,6 +16,8 @@ Usage:
 
 Example:
   bash install.sh 'sk-your-token'
+
+Pass the token exactly as provided. Do not add another sk- prefix.
 EOF
 }
 
@@ -48,7 +51,7 @@ parse_token() {
   fi
 
   if [ "$#" -ne 1 ]; then
-    usage
+    usage >&2
     exit 1
   fi
 
@@ -56,7 +59,13 @@ parse_token() {
     fail "token must not be empty"
   fi
 
-  printf '%s' "$1"
+  case "$1" in
+    sk-sk-*)
+      fail "token starts with sk-sk-. Pass the token exactly as provided, without adding another sk- prefix"
+      ;;
+  esac
+
+  PARSED_TOKEN="$1"
 }
 
 build_env_block() {
@@ -270,8 +279,9 @@ set_launchctl_env() {
 main() {
   local token
 
+  parse_token "$@"
+  token="$PARSED_TOKEN"
   require_macos
-  token="$(parse_token "$@")"
 
   update_shell_profiles "$token"
   update_claude_settings "$token"

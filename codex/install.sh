@@ -6,6 +6,7 @@ MODEL_PROVIDER="OpenAI"
 MODEL="gpt-5.5"
 REVIEW_MODEL="gpt-5.5"
 MODEL_REASONING_EFFORT="xhigh"
+PARSED_TOKEN=""
 
 usage() {
   cat <<'EOF'
@@ -15,6 +16,8 @@ Usage:
 
 Example:
   bash install.sh 'sk-your-token'
+
+Pass the token exactly as provided. Do not add another sk- prefix.
 EOF
 }
 
@@ -42,7 +45,7 @@ parse_token() {
   fi
 
   if [ "$#" -ne 1 ]; then
-    usage
+    usage >&2
     exit 1
   fi
 
@@ -50,7 +53,13 @@ parse_token() {
     fail "token must not be empty"
   fi
 
-  printf '%s' "$1"
+  case "$1" in
+    sk-sk-*)
+      fail "token starts with sk-sk-. Pass the token exactly as provided, without adding another sk- prefix"
+      ;;
+  esac
+
+  PARSED_TOKEN="$1"
 }
 
 update_config_toml() {
@@ -278,8 +287,9 @@ main() {
   local token
   local codex_dir
 
+  parse_token "$@"
+  token="$PARSED_TOKEN"
   require_macos
-  token="$(parse_token "$@")"
   codex_dir="$HOME/.codex"
 
   mkdir -p "$codex_dir"
