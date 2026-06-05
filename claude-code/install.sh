@@ -86,17 +86,24 @@ build_env_block() {
   printf '%s\n' "$END_MARKER"
 }
 
-remove_existing_block() {
+remove_existing_env_entries() {
   local source_file="$1"
   local target_file="$2"
 
   awk -v begin="$BEGIN_MARKER" -v end="$END_MARKER" '
+    function is_managed_export(line) {
+      return line ~ /^[ \t]*(export[ \t]+)?(ANTHROPIC_BASE_URL|ANTHROPIC_AUTH_TOKEN|CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC|CLAUDE_CODE_ATTRIBUTION_HEADER)[ \t]*=/
+    }
+
     $0 == begin {
       skipping = 1
       next
     }
     $0 == end {
       skipping = 0
+      next
+    }
+    is_managed_export($0) {
       next
     }
     skipping != 1 {
@@ -114,7 +121,7 @@ append_env_block_to_profile() {
   touch "$profile_file"
 
   temp_file="$(mktemp "${TMPDIR:-/tmp}/claude-profile.XXXXXX")"
-  remove_existing_block "$profile_file" "$temp_file"
+  remove_existing_env_entries "$profile_file" "$temp_file"
 
   {
     if [ -s "$temp_file" ]; then

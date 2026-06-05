@@ -20,7 +20,7 @@ The Claude Code installer updates:
 - `~/.bash_profile` when it already exists or when the current shell is bash
 - `~/.claude/settings.json`
 
-It writes a managed environment block to shell profile files and replaces the `env` object in Claude Code settings while preserving other top-level settings.
+It removes old standalone exports for the managed Claude Code keys, writes a fresh managed environment block to shell profile files, and replaces the `env` object in Claude Code settings while preserving other top-level settings.
 
 ## Codex CLI
 
