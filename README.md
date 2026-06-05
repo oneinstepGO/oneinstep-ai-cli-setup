@@ -35,7 +35,7 @@ The Codex installer updates:
 - `~/.codex/config.toml`
 - `~/.codex/auth.json`
 
-It configures Codex CLI to use the OneInStep OpenAI-compatible endpoint and writes the token to `OPENAI_API_KEY` in `auth.json`.
+It configures Codex CLI to use the OneInStep OpenAI-compatible endpoint, replaces the managed OpenAI provider settings in `config.toml`, and writes the token to `OPENAI_API_KEY` in `auth.json`.
 Pass the token exactly as provided, including its existing `sk-` prefix. Do not add another `sk-`.
 
 ## Layout

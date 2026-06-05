@@ -89,6 +89,8 @@ function table_name(line, value) {
   value = line
   sub(/^[ \t]*\[/, "", value)
   sub(/\][ \t]*(#.*)?$/, "", value)
+  gsub(/"/, "", value)
+  gsub(/\047/, "", value)
   return trim(value)
 }
 
